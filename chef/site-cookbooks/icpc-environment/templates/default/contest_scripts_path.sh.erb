@@ -1,0 +1,3 @@
+# Managed by Chef - <%= @node['fqdn'] %>
+# Add Contest Scripts to the path
+export PATH="<%= node['contestenv']['util_dir'] %>/scripts:$PATH"

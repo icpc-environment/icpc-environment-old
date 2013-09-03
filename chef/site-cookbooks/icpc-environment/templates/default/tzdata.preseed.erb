@@ -1,0 +1,6 @@
+# timezone preeseed file
+tzdata tzdata/Areas select "<%= @node['tzarea'] %>"
+tzdata tzdata/Areas seen true
+
+tzdata tzdata/Zones/<%= @node['tzarea'] %> select "<%= @node['tzzone'] %>"
+tzdata tzdata/Zones/<%= @node['tzarea'] %> seen true

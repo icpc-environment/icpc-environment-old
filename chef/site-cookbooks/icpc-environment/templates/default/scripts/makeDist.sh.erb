@@ -1,0 +1,57 @@
+#!/bin/bash
+# Cleans up chef, temporary files, etc and makes it ready for imaging
+
+UTILDIR="<%= node['contestenv']['util_dir']%>"
+
+# Remove all rubygems(if we have gem installed)
+if [ command -v gem >/dev/null 2>&1 ]; then
+	gem list | cut -d" " -f1 | xargs gem uninstall -aIx
+fi
+# remove the ruby gems directory
+rm -rf /var/lib/gems
+
+# Delete chef cache files(and some other cleanup from the chef recipes)
+rm -rf /var/chef
+
+rm -f /tmp/eclipse.tar.gz
+rm -f /tmp/java.tar.gz
+rm -f /tmp/scala.tgz
+
+# remove the git repositories
+rm -rf /etc/skel/.git
+rm -rf /home/seradmin/.git
+
+#apt-get remove --purge -y ruby1.9.3
+
+# Remove the 'vagrant' user
+#find / -user vagrant -delete
+#userdel vagrant
+#rm -rf /home/vagrant
+
+# Reset the team(and any defaults)
+$UTILDIR/scripts/deleteUser.sh
+
+# reset the TEAM and SITE
+echo "" > $UTILDIR/TEAM
+echo "fit" > $UTILDIR/SITE
+
+# Remove the team wallpaper
+rm -f $UTILDIR/teamWallpaper.png
+
+# Delete the printers/printer class
+for PRINTER in $(lpstat -v | cut -d ' ' -f 3 | tr -d ':')
+do
+  lpadmin -x $PRINTER
+done
+lpadmin -x ContestPrinter
+
+# Cleanup apt cache/unnecessary package
+apt-get autoremove --purge -y
+apt-get clean
+
+# Remove 'apt-get update' data
+rm -rf /var/lib/apt/lists
+mkdir -p /var/lib/apt/lists/partial
+
+# enable the firewall
+ufw enable

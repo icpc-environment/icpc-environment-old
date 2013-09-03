@@ -1,0 +1,6 @@
+# Managed by Chef - <%= @node['fqdn'] %>
+# Disable some apt-caching
+Dir::Cache {
+	srcpkgcache "";
+	pkgcache "";
+}

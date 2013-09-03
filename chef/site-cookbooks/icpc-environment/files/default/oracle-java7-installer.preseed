@@ -1,0 +1,3 @@
+# Oracle-java7-installer license agreement
+debconf shared/accepted-oracle-license-v1-1 select true
+debconf shared/accepted-oracle-license-v1-1 seen true

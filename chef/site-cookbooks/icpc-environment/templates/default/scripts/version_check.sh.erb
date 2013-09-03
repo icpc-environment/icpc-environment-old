@@ -1,0 +1,46 @@
+#!/bin/bash
+
+VFILE="/tmp/versions.txt"
+echo "Software Versions" > $VFILE
+
+# these checks happen outside the chroot
+echo -e "==== javac Version ====" | tee -a $VFILE
+javac -version | tee -a $VFILE 2>&1
+
+echo -e "\n\n==== GCC Version ====" | tee -a $VFILE
+gcc --version | tee -a $VFILE 2>&1
+
+echo -e "\n\n==== G++ Version ====" | tee -a $VFILE
+g++ --version | tee -a $VFILE 2>&1
+
+echo -e "\n\n==== FPC(Pascal) Version ====" | tee -a $VFILE
+fpc -version | tee -a $VFILE 2>&1
+
+echo -e "\n\n==== Haskell Version ====" | tee -a $VFILE
+ghc --version | tee -a $VFILE 2>&1
+
+echo -e "\n\n==== gmcs(mono compiler) Version ====" | tee -a $VFILE
+gmcs --version | tee -a $VFILE 2>&1
+
+# There is currently no compiler setup for fortran
+echo -e "\n\n==== gfortran Version ====" | tee -a $VFILE
+gfortran --version | tee -a $VFILE 2>&1
+
+# There is currently no compiler set up for ada
+echo -e "\n\n==== GNAT(ADA) Version ====" | tee -a $VFILE
+gnat | head -n1 | tee -a $VFILE 2>&1
+
+# This needs to be checked in the chroot
+echo -e "\n\n==== Python Version ====" | tee -a $VFILE
+python --version | tee -a $VFILE 2>&1
+
+echo -e "\n\n==== Java Version ====" | tee -a $VFILE
+java -version | tee -a $VFILE 2>&1
+
+echo -e "\n\n==== Mono Version ====" | tee -a $VFILE
+mono --version | tee -a $VFILE 2>&1
+
+echo -e "\n\n==== Scala Version ====" | tee -a $VFILE
+scala -version | tee -a $VFILE 2>&1
+
+echo -e "Software versions written to: $VFILE\n\n"

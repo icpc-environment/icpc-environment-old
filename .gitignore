@@ -1,0 +1,5 @@
+chef/cookbooks/*
+*.tar.gz
+dist/*
+.vagrant
+

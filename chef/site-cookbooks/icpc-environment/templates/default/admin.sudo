@@ -1,0 +1,2 @@
+#<%= @admin_username %> can run any command without a password
+<%= @admin_username %> ALL=NOPASSWD: ALL
