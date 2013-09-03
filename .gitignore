@@ -1,5 +1,9 @@
-chef/cookbooks/*
+contest.json
 *.tar.gz
-dist/*
 .vagrant
+*.box
 
+# Whatever you might call the output
+*.raw
+*.dd
+*.bin

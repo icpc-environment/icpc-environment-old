@@ -52,6 +52,14 @@ bash "udev persistent net disable" do
 	not_if "test -h /etc/udev/rules.d/75-persistent-net-generator.rules"
 end
 
+# fix /etc/network/interfaces(vagrant adds things we don't care about)
+template "/etc/network/interfaces" do
+	source "interfaces.erb"
+	mode "0644"
+	owner "root"
+	group "root"
+end
+
 # Setup the firewall
 include_recipe "icpc-environment::firewall"
 

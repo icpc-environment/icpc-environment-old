@@ -17,16 +17,22 @@ rm -f /tmp/eclipse.tar.gz
 rm -f /tmp/java.tar.gz
 rm -f /tmp/scala.tgz
 
+rm -rf /var/cache/oracle-jdk7-installer/
+
 # remove the git repositories
 rm -rf /etc/skel/.git
-rm -rf /home/seradmin/.git
+rm -rf /home/icpcadmin/.git
 
 #apt-get remove --purge -y ruby1.9.3
 
-# Remove the 'vagrant' user
-#find / -user vagrant -delete
-#userdel vagrant
-#rm -rf /home/vagrant
+# Cleanup 'vagrant' things
+rm -f /etc/profile.d/vagrant_ruby.sh
+rm -rf /opt/vagrant_ruby
+rm -rf /home/vagrant
+userdel vagrant
+
+# Delete proxy settings for apt(if any)
+rm -f /etc/apt/apt.conf.d/01proxy
 
 # Reset the team(and any defaults)
 $UTILDIR/scripts/deleteUser.sh

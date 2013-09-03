@@ -14,7 +14,7 @@ while true; do
 	printerIP=$(zenity --entry --title="Adding Printers..." --text="Enter Printer IP:" --entry-text="0.0.0.0")
 	if [ $printerIP != "0.0.0.0" ]
 	then
-		lpadmin -p Printer$i -v socket://$printerIP -E
+		lpadmin -p Printer$i -v socket://$printerIP -E -m drv:///sample.drv/generic.ppd
 		lpadmin -p Printer$i -c ContestPrinter
 		cupsenable Printer$i
 		accept Printer$i

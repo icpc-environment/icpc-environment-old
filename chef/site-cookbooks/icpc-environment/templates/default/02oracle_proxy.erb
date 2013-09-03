@@ -1,0 +1,3 @@
+# Managed by Chef - <%= @node['fqdn'] %>
+# apt-cacher-ng doesn't like downloading from oracle, so we ignore the cache
+Acquire::http::Proxy::download.oracle.com "DIRECT";

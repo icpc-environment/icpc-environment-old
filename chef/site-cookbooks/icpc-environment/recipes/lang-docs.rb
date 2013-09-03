@@ -13,7 +13,9 @@
 # python-doc    - 32mb		(/usr/share/doc/python-doc/html/index.html)
 # fp-docs       - 40mb		(/usr/share/doc/fp-docs/2.4.0/fpctoc.html)
 # ghc-doc       - 60mb		(/usr/share/doc/ghc-doc/index.html)
-%w{python-doc stl-manual fp-docs openjdk-7-doc ghc-doc}.each do |pkg|
+# monodoc-browser - 25mb? (gtk program with mono documentation)
+
+%w{python-doc stl-manual fp-docs openjdk-7-doc ghc-doc monodoc-browser}.each do |pkg|
 	package pkg
 end
 

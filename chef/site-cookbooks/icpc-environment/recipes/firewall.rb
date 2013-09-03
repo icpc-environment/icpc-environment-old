@@ -23,7 +23,7 @@ allowed_sites = fw_rules['allowed_sites']
 allowed_sites.each do |host|
     firewall_rule "FW Allow Website '#{host}" do
         protocol :tcp
-        dest_port 80
+        port 80
         destination host
         direction :out
         action :allow
@@ -32,35 +32,34 @@ end
 
 firewall_rule "FW Allow Printing" do
     protocol :tcp
-    dest_port 9100
+    port 9100
     direction :out
     action :allow
 end
 
 firewall_rule "FW Allow DHCP(67)" do
     protocol :udp
-    dest_port 67
+    port 67
     direction :out
     action :allow
 end
 
 firewall_rule "FW Allow DHCP(68)" do
     protocol :udp
-    dest_port 68
+    port 68
     direction :out
     action :allow
 end
 
 firewall_rule "FW Allow DNS" do
-    protocol :udp
-    dest_port 53
+    port 53
     direction :out
     action :allow
 end
 
 firewall_rule "FW Allow NTP" do
     protocol :udp
-    dest_port 123
+    port 123
     direction :out
     action :allow
 end

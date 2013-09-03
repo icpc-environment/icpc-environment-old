@@ -18,11 +18,16 @@ end
 
 # Set the timezone
 tzdata = data_bag_item("contestenv",node['contestenv']['databag'])['tzdata']
-node['tzarea'] = tzdata['area']
-node['tzzone'] = tzdata['zone']
-apt_package "tzdata" do
-	action :reconfig
-	response_file "tzdata.preseed.erb"
+execute "update-tzdata" do
+	command "dpkg-reconfigure -f noninteractive tzdata"
+	action :nothing
+end
+file "/etc/timezone" do
+	owner "root"
+	group "root"
+	mode "0644"
+	content tzdata
+	notifies :run, "execute[update-tzdata]"
 end
 
 include_recipe "icpc-environment::scripts"
@@ -36,10 +41,25 @@ include_recipe "icpc-environment::scripts"
 # ntp          - keeping the time in sync
 # cups         - needed for printing
 # cups-bsd     - printing stuff(provides lpr for enscript)
-# enscript     - for the pcpr printing script
-%w{ufw imagemagick gksu git ntp cups cups-bsd enscript}.each do |pkg|
+# enscript     - for page numbering
+# pdftk        - for cups filters
+%w{ufw imagemagick gksu git ntp cups cups-bsd pdftk enscript}.each do |pkg|
 	package pkg
 end
+
+# set up cups to watermark all pages
+#cookbook_file "/usr/lib/cups/filter/watermark_printout" do
+#	source "watermark_printout.sh"
+#	owner "root"
+#	group "root"
+#	mode "0755"
+#end
+#cookbook_file "/usr/share/cups/mime/local.convs" do
+#	source "local.convs"
+#	owner "root"
+#	group "root"
+#	mode "0644"
+#end
 
 ######################################
 ### Create the contestant user
@@ -78,6 +98,12 @@ user "#{admin_info['username']}" do
 	password admin_passwordhash
 	shell "/bin/bash"
 	home "/home/#{admin_info['username']}"
+end
+# add them to the printer admin group
+group "lpadmin" do
+	action :modify
+	members admin_info['username']
+	append true
 end
 
 # Give them nopasswd sudo access

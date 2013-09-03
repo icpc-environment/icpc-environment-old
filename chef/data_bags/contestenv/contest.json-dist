@@ -1,0 +1,17 @@
+{
+    "id":            "contest", /* must match name of file */
+    "admin_info": {
+        "username":  "icpcadmin",
+        "salt":      "4aEc8P",
+        "password":  "admin_password_here"
+    },
+    "tzdata": "America/New_York",
+    "script_dir": "/icpc",
+
+    "fw_rules": {
+        "allowed_sites": [
+            "163.118.133.145",  /* dj.cs.fit.edu  */
+            "163.118.135.22"    /* ser.cs.fit.edu */
+        ]
+    }
+}

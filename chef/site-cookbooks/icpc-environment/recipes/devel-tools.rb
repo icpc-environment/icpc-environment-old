@@ -24,6 +24,32 @@ package "gawk"
 
 #######################
 ### Oracle Java JDK ###
+if node['contestenv']['jdk32']
+	bash "copy jdk(32bit) cache" do
+		code <<-EOF
+			mkdir -p /var/cache/oracle-jdk7-installer
+			cp #{node['contestenv']['jdk32']} /var/cache/oracle-jdk7-installer
+		EOF
+		not_if "test -f #{File.basename(node['contestenv']['jdk32'])}"
+	end
+end
+
+if node['contestenv']['jdk64']
+	bash "copy jdk(64bit) cache" do
+		code <<-EOF
+			mkdir -p /var/cache/oracle-jdk7-installer
+			cp #{node['contestenv']['jdk64']} /var/cache/oracle-jdk7-installer
+		EOF
+		not_if "test -f #{File.basename(node['contestenv']['jdk64'])}"
+	end
+end
+# Ignore apt-proxies for oracle
+template "/etc/apt/apt.conf.d/02oracle_proxy" do
+	source "02oracle_proxy.erb"
+	owner "root"
+	group "root"
+	mode "0644"
+end
 apt_repository "webupd8team" do
 	uri "http://ppa.launchpad.net/webupd8team/java/ubuntu"
 	distribution node['lsb']['codename']
@@ -35,12 +61,13 @@ package "oracle-java7-installer" do
 	response_file "oracle-java7-installer.preseed"
 end
 
-bash "cleanup java install" do
-	code <<-EOF
-		rm -rf /var/cache/oracle-jdk7-installer/
-	EOF
-	only_if "test -d /var/cache/oracle-jdk7-installer/"
-end
+# let makedist.sh do this
+#bash "cleanup java install" do
+#	code <<-EOF
+#		rm -rf /var/cache/oracle-jdk7-installer/
+#	EOF
+#	only_if "test -d /var/cache/oracle-jdk7-installer/"
+#end
 
 #######################
 ###      Scala      ###
