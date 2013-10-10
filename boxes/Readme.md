@@ -11,23 +11,19 @@ For the US ACM SouthEast Region ICPC, we use a 32bit image for maximum compatibi
 ## Building a base box
 1. `vagrant up` (Wait for this to finish)
 2. `vagrant halt`
-3. Open virtualbox, then open the settings for the machine named 'icpc-environment-base32_##########'
+3. Open virtualbox, then open the settings for the machine named `icpc-environment-base32_##########`
 4. Add a new virtual hard disk to the sata controller for the machine.
     * Hard Drive File Type: VMDK
     * File size: 7.00 GB
     * File location: usbdisk
 5. Attach a live-cd to one of the cd drives.  I use gparted for this step.  Your settings should look something like this now:
-<!--![storage settings](./storage_settings.png)-->
+![storage settings](storage_settings.png)
 6. Start the VM, then boot from the cd(press F12)
 7. If using gparted, accept the defaults for booting, and then wait for GParted to launch in the GUI.
 8. From the dropdown in the top right, select /dev/sdb.
 9. From the menu, choose Device, then "Create Partition Table".  The default of MS-DOS is fine. Click Apply.
 10. Create partitions as follows:
-        | partition | file system | size       | label |
-        |-----------|-------------|------------|-------|
-        | /dev/sdb1 | fat32       | 512.00 MiB | ICPC  |
-        | /dev/sdb2 | ext2        | 256.00 MiB |       |
-        | /dev/sdb3 | ext4        |   6.25 GiB |       |
+![gparted settings](gparted_settings.png)
 11. Copy data over to the new partitions
     ```
     # Copy root partition
@@ -48,6 +44,8 @@ For the US ACM SouthEast Region ICPC, we use a 32bit image for maximum compatibi
     ```
     LABEL=ICPC /mnt/usbdrive vfat defaults,uid=contestant,gid=contestant,nobootwait 0 0
     ```
+    ![fstab settings](fstab_settings.png)  
+    **Note:** There is an error in this image; it reads fat32 instead of vfat.
 14. Ok, that's all the changes we'll make right now.  Turn off the machine, then edit the VM settings once again. Remove the original disk, and set the usbdisk to be on 'SATA Port 0'.  Attach another livecd(I use SystemRescueCD for this part).
 15. Turn the VM on, then boot from cd.  At the menu, choose `1) SystemRescueCD: default boot options` if you are doing a 32bit box.  Choose `C) Standard 64bit kernel (rescue64) with more choice...` then choose `1) SystemRescueCD with default options` from the next menu.  Accept any defaults(Keymaps/etc) while the system boots up.
 16. Now we have to fix grub.
