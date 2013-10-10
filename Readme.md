@@ -46,9 +46,9 @@ Lastly, copy the file `chef/data_bags/contestenv/contest.json-dist` to `chef/dat
 
 
 ### Building
-It's pretty simple at this point, simply run `vagrant up`.  This will launch the VM, run the chef-solo provisioner and configure the environment exactly as specified.  Once it's done, you have a few options.  You can manually tweak the resulting vm(not recommended).
+It's pretty simple at this point, simply run `vagrant up`.  This will launch the VM, run the chef-solo provisioner and configure the environment exactly as specified.  On an i7 2600 using an apt-caching server, this process takes right around 11 minutes to complete. Once it's done, you have a few options.
 
-When you've decided that the image is perfect, run `/icpc/scripts/makeDist.sh` from the icpcadmin user to clean up a few things, then poweroff the machine.
+When you've decided that your image is perfect, run `/icpc/scripts/makeDist.sh` from the icpcadmin user to clean up a few things, then poweroff the machine.
 
 Open a terminal to the directory where the box-disk1.vmdk file lives(On windows, you can find this by right clicking on the VM in virtualbox and clicking "show in explorer").  Next run the following command to create a raw disk image that you can then `dd` onto a flash drive or hard drive.
 ```
@@ -72,10 +72,12 @@ You can place a custom background image to be used for the contestants in `dist/
 
 ## User Profile Customization
 To customize the desktop icons, firefox bookmarks, or any other settings that are specific to a user's profile you have two options.
-1. Make the changes manually and somehow try to keep track of what you did(not recommended)
-2. Make the changes manually, then commit them into the git repository and push it upstream.
+1. Make the changes manually and somehow try to keep track of what you did so you can apply them next time you build an image(not recommended)
+2. Make the changes manually, then commit them into the git repository and push it upstream, so it will be used next time you build.
 
-By deafult the user profile is deployed from /etc/skel, which is a git repository.  It will initially be on a different branch(chef does this for you).  You should probably run: `git checkout master`.  Then `git add` the files you want to include(try to think about whether it is necessary or not).  Follow this with a `git commit` and a `git push` and your changes will be used next time the VM is rebuilt.
+By deafult the user profile is deployed from /etc/skel, which is a git repository.  It will initially be on a different branch(chef does this for you).  You should probably run: `git checkout master`.  Then `git add` the files you want to include(try to think about whether it is necessary or not; there are lots of cache type files that are not strictly necessary to include).  Follow this with a `git commit` and a `git push` and your changes will be used next time the VM is rebuilt.
+
+To change the repository location, you will need to edit the `attributes/default.rb` file as described above.  It is recommended to fork the repositories on github and update the urls as appropriate.
 
 The 'icpcadmin' user has their own git repository that the user is deployed from, so you have two different "profiles" that you can manage.  I recommend placing shortcuts on the desktop of the admin user that link to the various administrative scripts available.
 
@@ -84,13 +86,3 @@ The entire contestant environment is build from a very minimal ubuntu image by c
 
 # Feedback/Suggestions
 Please use the GitHub Issue Tracker to file any bugs you encounter or to request additional features.  You can email the lead developer for this project: kj@ubergeek42.com.
-
-
-
-
-
-Download the required chef-cookbooks to chef/cookbooks
-* firewall - http://community.opscode.com/cookbooks/firewall (v0.11.0)
-* apt - http://community.opscode.com/cookbooks/apt (v1.7.0)
-* ntp - http://community.opscode.com/cookbooks/ntp (v1.3.2)
-You can also accomplish this by using librarian-chef on the Cheffile in the chef directory.
