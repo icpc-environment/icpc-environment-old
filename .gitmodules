@@ -7,9 +7,3 @@
 [submodule "chef/cookbooks/firewall"]
 	path = chef/cookbooks/firewall
 	url = https://github.com/opscode-cookbooks/firewall.git
-[submodule "dist/admin_home"]
-	path = dist/admin_home
-	url = git://github.com/icpc-environment/admin_home.git
-[submodule "dist/contestant_home"]
-	path = dist/contestant_home
-	url = git://github.com/icpc-environment/contestant_home.git
